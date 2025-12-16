@@ -1,0 +1,33 @@
+
+[versions]
+kotlinVersion = "2.1.20"
+dependencyCheckVersion = "12.1.8"
+sonarqubeVersion = "7.0.1.6134"
+detektVersion = "1.23.8"
+testLoggerVersion = "4.0.0"
+jacoco="0.8.13"
+kotlinLogging="7.0.13"
+slf4jApiVersion = "2.0.17"
+releasePluginVersion = "3.1.0"
+classGraphVersion = "4.8.184"
+
+[libraries]
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektVersion" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinLogging" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
+junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
+logging-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApiVersion" }
+logging-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jApiVersion" }
+classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classGraphVersion"}
+
+[plugins]
+dependency-check-plugin = { id = "org.owasp.dependencycheck", version.ref = "dependencyCheckVersion" }
+sonarqube-plugin = { id = "org.sonarqube", version.ref = "sonarqubeVersion" }
+detekt-plugin = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektVersion" }
+test-logger-plugin = { id = "com.adarshr.test-logger", version.ref = "testLoggerVersion" }
+release-plugin = { id = "net.researchgate.release", version.ref = "releasePluginVersion" }
+
+[bundles]
+

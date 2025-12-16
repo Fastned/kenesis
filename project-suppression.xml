@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Example suppression file: https://jeremylong.github.io/DependencyCheck/general/suppression.html -->
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+
+    <!--    False positives, not as urgent as the ones above.-->
+
+    <!--Real threats, we should update these dependencies asap and remove them from the suppression list.-->
+
+</suppressions>

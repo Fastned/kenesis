@@ -1,0 +1,28 @@
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+*.iws
+*.iml
+*.ipr
+
+.idea/*
+!.idea/runConfigurations
+.idea/
+
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+\.mvn/wrapper/maven-wrapper\.jar
