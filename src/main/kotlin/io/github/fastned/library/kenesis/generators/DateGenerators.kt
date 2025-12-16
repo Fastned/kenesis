@@ -1,4 +1,4 @@
-package nl.fastned.library.kenesis.generators
+package io.github.fastned.library.kenesis.generators
 
 import java.time.Instant
 import java.time.LocalDate

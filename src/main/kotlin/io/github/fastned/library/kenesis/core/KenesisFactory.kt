@@ -1,11 +1,11 @@
-package nl.fastned.library.kenesis.core
+package io.github.fastned.library.kenesis.core
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import nl.fastned.library.kenesis.config.DefaultProviderConfiguration
-import nl.fastned.library.kenesis.config.KenesisGenerator
-import nl.fastned.library.kenesis.utils.getEnumType
-import nl.fastned.library.kenesis.utils.loadCustomGenerators
-import nl.fastned.library.kenesis.utils.randomEnumValue
+import io.github.fastned.library.kenesis.config.DefaultProviderConfiguration
+import io.github.fastned.library.kenesis.config.KenesisGenerator
+import io.github.fastned.library.kenesis.utils.getEnumType
+import io.github.fastned.library.kenesis.utils.loadCustomGenerators
+import io.github.fastned.library.kenesis.utils.randomEnumValue
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter

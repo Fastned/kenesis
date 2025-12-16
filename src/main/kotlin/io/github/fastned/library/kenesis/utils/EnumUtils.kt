@@ -1,4 +1,4 @@
-package nl.fastned.library.kenesis.utils
+package io.github.fastned.library.kenesis.utils
 
 import kotlin.random.Random
 import kotlin.reflect.KClass

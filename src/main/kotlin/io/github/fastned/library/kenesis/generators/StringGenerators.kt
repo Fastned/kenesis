@@ -1,4 +1,4 @@
-package nl.fastned.library.kenesis.generators
+package io.github.fastned.library.kenesis.generators
 
 object StringGenerators {
     fun randomString(length: Int = 20): String {

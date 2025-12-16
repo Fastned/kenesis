@@ -1,7 +1,7 @@
-package nl.fastned.library.kenesis.generators
+package io.github.fastned.library.kenesis.generators
 
-import nl.fastned.library.kenesis.CustomProviderTest
-import nl.fastned.library.kenesis.config.KenesisGenerator
+import io.github.fastned.library.kenesis.CustomProviderTest
+import io.github.fastned.library.kenesis.config.KenesisGenerator
 
 class SpecialIntAlwaysZeroGenerator : KenesisGenerator<CustomProviderTest.SpecialIntAlwaysZero> {
     override fun generate(): CustomProviderTest.SpecialIntAlwaysZero {

@@ -1,4 +1,4 @@
-package nl.fastned.library.kenesis
+package io.github.fastned.library.kenesis
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

@@ -1,4 +1,4 @@
-package nl.fastned.library.kenesis.config
+package io.github.fastned.library.kenesis.config
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlin.reflect.KClass

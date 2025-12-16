@@ -1,7 +1,7 @@
-package nl.fastned.library.kenesis.utils
+package io.github.fastned.library.kenesis.utils
 
 import io.github.classgraph.ClassGraph
-import nl.fastned.library.kenesis.config.KenesisGenerator
+import io.github.fastned.library.kenesis.config.KenesisGenerator
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 import kotlin.reflect.KType

@@ -16,7 +16,7 @@ plugins {
 	alias(libs.plugins.release.plugin)
 }
 
-group = "nl.fastned"
+group = "io.github.fastned"
 
 repositories {
 	mavenCentral()
@@ -115,6 +115,9 @@ release {
 
 publishing {
 	repositories {
+        maven {
+            name = project.name
+        }
 	}
 	publications {
 		create<MavenPublication>(project.name) {

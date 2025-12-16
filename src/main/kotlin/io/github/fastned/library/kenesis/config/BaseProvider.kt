@@ -1,4 +1,4 @@
-package nl.fastned.library.kenesis.config
+package io.github.fastned.library.kenesis.config
 
 import kotlin.reflect.KClass
 

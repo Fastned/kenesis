@@ -1,8 +1,8 @@
-package nl.fastned.library.kenesis.config
+package io.github.fastned.library.kenesis.config
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import nl.fastned.library.kenesis.generators.DateGenerators
-import nl.fastned.library.kenesis.generators.StringGenerators
+import io.github.fastned.library.kenesis.generators.DateGenerators
+import io.github.fastned.library.kenesis.generators.StringGenerators
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.time.Instant

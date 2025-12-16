@@ -1,6 +1,6 @@
-package nl.fastned.library.kenesis
+package io.github.fastned.library.kenesis
 
-import nl.fastned.library.kenesis.core.KenesisFactory
+import io.github.fastned.library.kenesis.core.KenesisFactory
 import kotlin.reflect.KProperty1
 
 inline fun <reified T : Any> kenesis(
