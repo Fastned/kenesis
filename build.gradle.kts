@@ -1,19 +1,22 @@
 import io.gitlab.arturbosch.detekt.getSupportedKotlinVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.net.URI
 
 plugins {
 	jacoco
 	`maven-publish`
 	`java-library`
+    signing
 
-	kotlin("jvm") version libs.versions.kotlinVersion
+    kotlin("jvm") version libs.versions.kotlinVersion
 
 	alias(libs.plugins.dependency.check.plugin)
 	alias(libs.plugins.sonarqube.plugin)
 	alias(libs.plugins.detekt.plugin)
 	alias(libs.plugins.test.logger.plugin)
 	alias(libs.plugins.release.plugin)
+    alias(libs.plugins.vanniktech.plugin)
 }
 
 group = "io.github.fastned"
@@ -95,34 +98,32 @@ configurations.matching { it.name == "detekt" }.all {
 	}
 }
 
-// Used by the CI pipeline to push a git tag based on the project version
-tasks.register("printVersion") {
-	group = "version"
-	description = "Prints the project version"
-	doLast {
-		println("Version: ${project.version}")
-	}
-}
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
 
-release {
-	// Required for allowing the Gradle release plugin to work in a GitLab CI job
-	failOnUnversionedFiles = false
-	git {
-		// The Gradle release plugin will push 3 commits on each release, we don't want to trigger pipelines for those
-		pushOptions.add("--push-option=ci.skip")
-	}
-}
+    coordinates(
+        groupId = "io.github.fastned",
+        artifactId = "kenesis",
+        version = project.version.toString(),
+    )
 
-publishing {
-	repositories {
-        maven {
-            name = project.name
+    pom {
+        name.set("Kenesis")
+        description.set("A Kotlin library for generating instances of data classes with nullable properties.")
+        url.set("https://github.com/fastned/kenesis")
+
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
         }
-	}
-	publications {
-		create<MavenPublication>(project.name) {
-			artifactId = project.name
-			from(project.components["java"])
-		}
-	}
+
+        scm {
+            connection.set("scm:git:git://github.com/Fastned/kenesis.git")
+            developerConnection.set("scm:git:ssh://github.com/js-fastned/kenesis.git")
+            url.set("https://github.com/Fastned/kenesis")
+        }
+    }
 }

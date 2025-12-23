@@ -10,6 +10,7 @@ kotlinLogging="7.0.13"
 slf4jApiVersion = "2.0.17"
 releasePluginVersion = "3.1.0"
 classGraphVersion = "4.8.184"
+vanniktechVersion="0.35.0"
 
 [libraries]
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektVersion" }
@@ -28,6 +29,7 @@ sonarqube-plugin = { id = "org.sonarqube", version.ref = "sonarqubeVersion" }
 detekt-plugin = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektVersion" }
 test-logger-plugin = { id = "com.adarshr.test-logger", version.ref = "testLoggerVersion" }
 release-plugin = { id = "net.researchgate.release", version.ref = "releasePluginVersion" }
+vanniktech-plugin = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechVersion" }
 
 [bundles]
 
