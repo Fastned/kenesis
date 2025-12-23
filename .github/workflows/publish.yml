@@ -2,8 +2,9 @@ name: Publish Kenesis to Maven Central
 
 on:
   push:
-    tags:
-      - '**'
+    branches:
+      - '*'
+      - '!main'
 
 jobs:
   publish:
