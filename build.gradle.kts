@@ -15,8 +15,18 @@ plugins {
 	id("pl.allegro.tech.build.axion-release")
 }
 
+
 group = "io.github.fastned"
 version = scmVersion.version
+
+scmVersion {
+	tag {
+		prefix.set("v")
+		versionSeparator.set("")
+	}
+	versionCreator("versionWithBranch")
+	branchVersionCreator.put("main", "simple")
+}
 
 repositories {
 	mavenCentral()
