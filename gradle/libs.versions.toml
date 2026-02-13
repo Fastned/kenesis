@@ -1,6 +1,6 @@
 
 [versions]
-kotlinVersion = "2.1.20"
+kotlinVersion = "2.3.0"
 dependencyCheckVersion = "12.1.8"
 sonarqubeVersion = "7.0.1.6134"
 detektVersion = "1.23.8"

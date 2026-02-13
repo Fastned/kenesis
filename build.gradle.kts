@@ -9,6 +9,7 @@ plugins {
 
 	kotlin("jvm") version libs.versions.kotlinVersion
 
+	id("com.vanniktech.maven.publish") version "0.36.0"
 	alias(libs.plugins.dependency.check.plugin)
 	alias(libs.plugins.sonarqube.plugin)
 	alias(libs.plugins.detekt.plugin)
