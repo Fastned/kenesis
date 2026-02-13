@@ -16,7 +16,7 @@ class CustomParametersTest {
             )
         )
 
-        assertEquals(expected = "Custom String", actual = instance.customString)
+        assertEquals(expected = "Custo String", actual = instance.customString)
         assertEquals(expected = 456, actual = instance.customInt)
         assertNotEquals(illegal = "Custom String", actual = instance.aString)
         assertNotEquals(illegal = 456, actual = instance.someInt)
