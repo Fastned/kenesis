@@ -12,9 +12,11 @@ plugins {
 	id("io.gitlab.arturbosch.detekt")
 	id("com.adarshr.test-logger")
 	id("com.vanniktech.maven.publish")
+	id("pl.allegro.tech.build.axion-release")
 }
 
 group = "io.github.fastned"
+version = scmVersion.version
 
 repositories {
 	mavenCentral()

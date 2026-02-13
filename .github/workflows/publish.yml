@@ -1,5 +1,3 @@
-# .github/workflows/publish.yml
-
 name: Publish
 on:
   release:
@@ -16,7 +14,9 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 21
-      - name: Publish to MavenCentral
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Publish and release to MavenCentral
         run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}

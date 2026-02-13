@@ -7,7 +7,7 @@ pluginManagement {
     val detektVersion: String by settings
     val testLoggerVersion: String by settings
     val mavenPublishPluginVersion: String by settings
-    val semanticReleasePluginVersion: String by settings
+    val axionReleaseVersion: String by settings
 
     plugins {
         kotlin("jvm") version kotlinVersion
@@ -16,6 +16,8 @@ pluginManagement {
         id("io.gitlab.arturbosch.detekt") version detektVersion
         id("com.adarshr.test-logger") version testLoggerVersion
         id("com.vanniktech.maven.publish") version mavenPublishPluginVersion
+        id("pl.allegro.tech.build.axion-release") version axionReleaseVersion
+
     }
 }
 
