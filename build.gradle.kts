@@ -12,7 +12,6 @@ plugins {
 	id("io.gitlab.arturbosch.detekt")
 	id("com.adarshr.test-logger")
 	id("com.vanniktech.maven.publish")
-	id("com.dipien.semantic-version")
 }
 
 group = "io.github.fastned"
@@ -27,12 +26,6 @@ val kotlinLogging: String by project
 val slf4jApiVersion: String by project
 val classGraphVersion: String by project
 val semanticReleasePluginVersion: String by project
-
-buildscript {
-	dependencies {
-		classpath("com.dipien:semantic-version-gradle-plugin:2.0.0")
-	}
-}
 
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")

@@ -16,7 +16,6 @@ pluginManagement {
         id("io.gitlab.arturbosch.detekt") version detektVersion
         id("com.adarshr.test-logger") version testLoggerVersion
         id("com.vanniktech.maven.publish") version mavenPublishPluginVersion
-        id("com.dipien.semantic-version") version semanticReleasePluginVersion
     }
 }
 
