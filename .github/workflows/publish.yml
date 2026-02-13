@@ -1,7 +1,11 @@
 name: Publish
 on:
-  release:
-    types: [released, prereleased]
+  workflow_run:
+    workflows: ["build_and_test"]
+    types:
+      - completed
+    branches:
+      - main
 jobs:
   publish:
     name: Release build and publish
