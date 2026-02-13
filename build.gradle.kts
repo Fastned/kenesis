@@ -4,17 +4,15 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	jacoco
-	`maven-publish`
 	`java-library`
+	kotlin("jvm")
 
-	kotlin("jvm") version libs.versions.kotlinVersion
-
-	id("com.vanniktech.maven.publish") version "0.36.0"
-	alias(libs.plugins.dependency.check.plugin)
-	alias(libs.plugins.sonarqube.plugin)
-	alias(libs.plugins.detekt.plugin)
-	alias(libs.plugins.test.logger.plugin)
-	alias(libs.plugins.release.plugin)
+	id("org.owasp.dependencycheck")
+	id("org.sonarqube")
+	id("io.gitlab.arturbosch.detekt")
+	id("com.adarshr.test-logger")
+	id("com.vanniktech.maven.publish")
+	id("com.dipien.semantic-version")
 }
 
 group = "io.github.fastned"
@@ -24,18 +22,30 @@ repositories {
 	mavenLocal()
 }
 
+val detektVersion: String by project
+val kotlinLogging: String by project
+val slf4jApiVersion: String by project
+val classGraphVersion: String by project
+val semanticReleasePluginVersion: String by project
+
+buildscript {
+	dependencies {
+		classpath("com.dipien:semantic-version-gradle-plugin:2.0.0")
+	}
+}
+
 dependencies {
-    detektPlugins(libs.detekt.formatting)
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 
-    implementation(libs.kotlin.logging)
-    implementation(libs.kotlin.reflect)
-    implementation(libs.kotlin.stdlib)
-    implementation(libs.logging.slf4j.api)
-    implementation(libs.classgraph)
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLogging")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("org.slf4j:slf4j-api:$slf4jApiVersion")
+    implementation("io.github.classgraph:classgraph:$classGraphVersion")
 
-    testImplementation(libs.kotlin.test.junit5)
-    testImplementation(libs.logging.slf4j.simple)
-    testRuntimeOnly(libs.junit.platform)
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.slf4j:slf4j-simple:$slf4jApiVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 dependencyCheck {
@@ -50,8 +60,10 @@ detekt {
     autoCorrect = System.getProperty("autoCorrect") == "true"
 }
 
+val jacoco: String by project
+
 jacoco {
-    toolVersion = libs.versions.jacoco.get()
+    toolVersion = jacoco
 }
 
 java {
@@ -93,24 +105,6 @@ configurations.matching { it.name == "detekt" }.all {
 		if (requested.group == "org.jetbrains.kotlin") {
 			useVersion(getSupportedKotlinVersion())
 		}
-	}
-}
-
-// Used by the CI pipeline to push a git tag based on the project version
-tasks.register("printVersion") {
-	group = "version"
-	description = "Prints the project version"
-	doLast {
-		println("Version: ${project.version}")
-	}
-}
-
-release {
-	// Required for allowing the Gradle release plugin to work in a GitLab CI job
-	failOnUnversionedFiles = false
-	git {
-		// The Gradle release plugin will push 3 commits on each release, we don't want to trigger pipelines for those
-		pushOptions.add("--push-option=ci.skip")
 	}
 }
 
