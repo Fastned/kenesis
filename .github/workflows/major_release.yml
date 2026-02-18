@@ -41,8 +41,7 @@ jobs:
           CURRENT_VERSION=$(./gradlew currentVersion -q | grep "Project version:" | awk '{print $3}')
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
 
-          # Extract major version number (assuming format vX.Y.Z)
-          MAJOR=$(echo $CURRENT_VERSION | sed 's/v\([0-9]*\)\..*/\1/')
+          MAJOR=$(echo $CURRENT_VERSION | sed 's/^\([0-9]*\)\..*/\1/')
           NEXT_MAJOR=$((MAJOR + 1))
           NEXT_VERSION="${NEXT_MAJOR}.0.0"
           echo "next_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
