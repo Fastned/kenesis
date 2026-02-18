@@ -1,0 +1,89 @@
+name: major_release
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  major-version-bump:
+    name: Bump major version and create tag
+    # Only run if PR was merged (not just closed) and the source branch starts with major-
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'major-')
+    runs-on: macOS-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Get current version and calculate next major version
+        id: version
+        run: |
+          CURRENT_VERSION=$(./gradlew currentVersion -q | grep "Project version:" | awk '{print $3}')
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+          # Extract major version number (assuming format vX.Y.Z)
+          MAJOR=$(echo $CURRENT_VERSION | sed 's/v\([0-9]*\)\..*/\1/')
+          NEXT_MAJOR=$((MAJOR + 1))
+          NEXT_VERSION="${NEXT_MAJOR}.0.0"
+          echo "next_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+
+          echo "Current version: $CURRENT_VERSION"
+          echo "Next major version: $NEXT_VERSION"
+
+      - name: Mark next major version
+        run: |
+          ./gradlew markNextVersion -Prelease.version=${{ steps.version.outputs.next_version }} --no-configuration-cache
+
+      - name: Create and push major version tag
+        run: |
+          ./gradlew createRelease pushRelease --no-configuration-cache
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Release build and publish
+    needs: major-version-bump
+    runs-on: macOS-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Publish to MavenCentral
+        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
