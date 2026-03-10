@@ -50,46 +50,57 @@ object KenesisFactory {
         config.loadBaseConfiguration()
     }
 
-    @Suppress("TooGenericExceptionCaught", "TooGenericExceptionThrown", "UNCHECKED_CAST")
+    @Suppress("TooGenericExceptionThrown")
     fun <T> instance(
         targetClass: KClass<out Any>,
         generateNullables: Boolean = false,
         useDefaultValues: Boolean = true,
         customParams: Map<KProperty1<T, *>, Any?> = emptyMap(),
-    ): T {
-        try {
-            val type = targetClass.createType()
-            logger.debug { "Checking the type: $type" }
-            return if (builtInProviders.containsKey(type)) {
-                builtInProviders[type]!!.let {
-                    logger.debug { "Using custom provider for type $type" }
-                    it() as T
-                }
-            } else if (customGenerators.containsKey(type)) {
-                customGenerators[type]!!.let {
-                    it.generate() as T
-                }
-            } else {
-                val primaryConstructor = validatePrimaryConstructor(targetClass = targetClass)
-
-                val constructorArguments = primaryConstructor.parameters
-                    .filter { parameter ->
-                        shouldGenerateConstructorParameter(parameter, useDefaultValues, customParams)
-                    }
-                    .associateWith(
-                        generateConstructorParameter(
-                            customParams,
-                            generateNullables,
-                            useDefaultValues,
-                        )
-                    )
-
-                return primaryConstructor.callBy(constructorArguments) as T
-            }
-        } catch (e: Exception) {
-            logger.error(e) { "Error while creating instance of class [${targetClass.qualifiedName}]" }
-            throw RuntimeException("Could not generate random value for class [${targetClass.qualifiedName}]", e)
+    ) = runCatching {
+        val type = targetClass.createType()
+        resolveInstance(type, targetClass, generateNullables, useDefaultValues, customParams)
+    }
+        .getOrElse { error ->
+            logger.error(error) { "Error while creating instance of class [${targetClass.qualifiedName}]" }
+            throw RuntimeException(
+                "Could not generate random value for class [${targetClass.qualifiedName}]",
+                error
+            )
         }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> resolveInstance(
+        type: KType,
+        targetClass: KClass<out Any>,
+        generateNullables: Boolean,
+        useDefaultValues: Boolean,
+        customParams: Map<KProperty1<T, *>, Any?>,
+    ): T = when {
+        builtInProviders.containsKey(type) -> {
+            logger.debug { "Using built-in provider for type $type" }
+            builtInProviders[type]!!() as T
+        }
+
+        customGenerators.containsKey(type) -> {
+            logger.debug { "Using custom generator for type $type" }
+            customGenerators[type]!!.generate() as T
+        }
+
+        else -> instantiateViaConstructor(targetClass, generateNullables, useDefaultValues, customParams)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> instantiateViaConstructor(
+        targetClass: KClass<out Any>,
+        generateNullables: Boolean,
+        useDefaultValues: Boolean,
+        customParams: Map<KProperty1<T, *>, Any?>,
+    ): T {
+        val primaryConstructor = validatePrimaryConstructor(targetClass)
+        val constructorArguments = primaryConstructor.parameters
+            .filter { parameter -> shouldGenerateConstructorParameter(parameter, useDefaultValues, customParams) }
+            .associateWith(generateConstructorParameter(customParams, generateNullables, useDefaultValues))
+        return primaryConstructor.callBy(constructorArguments) as T
     }
 
     private fun <T> shouldGenerateConstructorParameter(
