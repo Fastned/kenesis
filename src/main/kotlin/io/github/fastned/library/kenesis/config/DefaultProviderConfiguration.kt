@@ -9,6 +9,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.OffsetDateTime
 import java.time.ZonedDateTime
 import java.util.UUID
 import kotlin.random.Random
@@ -30,6 +31,7 @@ class DefaultProviderConfiguration : Provider() {
         addProvider(LocalTime::class, DateGenerators::randomLocalTime)
         addProvider(LocalDateTime::class, DateGenerators::randomLocalDateTime)
         addProvider(ZonedDateTime::class, DateGenerators::randomZonedDateTime)
+        addProvider(OffsetDateTime::class, DateGenerators::randomOffsetDateTime)
         addProvider(Instant::class, DateGenerators::randomInstant)
         addProvider(BigInteger::class) { BigInteger.valueOf(Random.nextLong()) }
         addProvider(BigDecimal::class) { BigDecimal.valueOf(Random.nextDouble()) }

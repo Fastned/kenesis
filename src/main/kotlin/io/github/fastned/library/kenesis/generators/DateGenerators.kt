@@ -4,6 +4,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -47,5 +48,11 @@ object DateGenerators {
 
     fun randomInstant(): Instant {
         return randomLocalDateTime().toInstant(ZoneOffset.UTC)
+    }
+
+    fun randomOffsetDateTime(): OffsetDateTime {
+        val localDateTime = randomLocalDateTime()
+        val offsetHours = (-18..18).random()
+        return OffsetDateTime.of(localDateTime, ZoneOffset.ofHours(offsetHours))
     }
 }
