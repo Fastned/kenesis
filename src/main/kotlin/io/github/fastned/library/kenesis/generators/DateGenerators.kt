@@ -22,11 +22,13 @@ private const val FINAL_HOUR = 23
 private const val FINAL_MINUTE = 59
 private const val FINAL_SECOND = 59
 
+private const val RANDOM_HOURS_OFFSET = 18
+
 object DateGenerators {
     fun randomLocalDate(): LocalDate {
         val year = (EPOCH_YEAR..MAX_YEAR).random()
         val month = (INITIAL_MONTH..FINAL_MONTH).random()
-        val day = (INITIAL_DAY..LocalDate.of(year, month, 1).lengthOfMonth()).random()
+        val day = (INITIAL_DAY..LocalDate.of(year, month, INITIAL_DAY).lengthOfMonth()).random()
         return LocalDate.of(year, month, day)
     }
 
@@ -52,7 +54,7 @@ object DateGenerators {
 
     fun randomOffsetDateTime(): OffsetDateTime {
         val localDateTime = randomLocalDateTime()
-        val offsetHours = (-18..18).random()
+        val offsetHours = (-RANDOM_HOURS_OFFSET..RANDOM_HOURS_OFFSET).random()
         return OffsetDateTime.of(localDateTime, ZoneOffset.ofHours(offsetHours))
     }
 }
