@@ -10,7 +10,6 @@ import java.time.LocalTime
 import java.time.OffsetDateTime
 import java.time.ZonedDateTime
 
-
 private const val RANDOM_HOURS_OFFSET_MIN = -12
 private const val RANDOM_HOURS_OFFSET_MAX = 14
 
