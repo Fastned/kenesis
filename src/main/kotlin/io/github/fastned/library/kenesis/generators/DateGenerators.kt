@@ -22,7 +22,8 @@ private const val FINAL_HOUR = 23
 private const val FINAL_MINUTE = 59
 private const val FINAL_SECOND = 59
 
-private const val RANDOM_HOURS_OFFSET = 18
+private const val RANDOM_HOURS_OFFSET_MIN = -12
+private const val RANDOM_HOURS_OFFSET_MAX = 14
 
 object DateGenerators {
     fun randomLocalDate(): LocalDate {
@@ -54,7 +55,7 @@ object DateGenerators {
 
     fun randomOffsetDateTime(): OffsetDateTime {
         val localDateTime = randomLocalDateTime()
-        val offsetHours = (-RANDOM_HOURS_OFFSET..RANDOM_HOURS_OFFSET).random()
+        val offsetHours = (RANDOM_HOURS_OFFSET_MIN..RANDOM_HOURS_OFFSET_MAX).random()
         return OffsetDateTime.of(localDateTime, ZoneOffset.ofHours(offsetHours))
     }
 }
