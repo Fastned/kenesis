@@ -2,6 +2,15 @@ package io.github.fastned.library.kenesis.core
 
 import io.github.fastned.library.kenesis.config.DefaultProviderConfiguration
 import io.github.fastned.library.kenesis.config.KenesisGenerator
+import io.github.fastned.library.kenesis.core.exception.RandomValueException
+import io.github.fastned.library.kenesis.core.model.wildcardCollectionType
+import io.github.fastned.library.kenesis.core.model.wildcardListType
+import io.github.fastned.library.kenesis.core.model.wildcardMapType
+import io.github.fastned.library.kenesis.core.model.wildcardNullableCollectionType
+import io.github.fastned.library.kenesis.core.model.wildcardNullableListType
+import io.github.fastned.library.kenesis.core.model.wildcardNullableMapType
+import io.github.fastned.library.kenesis.core.model.wildcardNullableSetType
+import io.github.fastned.library.kenesis.core.model.wildcardSetType
 import io.github.fastned.library.kenesis.utils.getEnumType
 import io.github.fastned.library.kenesis.utils.loadCustomGenerators
 import io.github.fastned.library.kenesis.utils.randomEnumValue
@@ -11,26 +20,10 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
-import kotlin.reflect.KTypeProjection
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.full.withNullability
-
-private val wildcardMapType = Map::class.createType(arguments = listOf(KTypeProjection.STAR, KTypeProjection.STAR))
-private val wildcardNullableMapType = Map::class.createType(
-    arguments = listOf(KTypeProjection.STAR, KTypeProjection.STAR),
-    nullable = true
-)
-private val wildcardCollectionType = Collection::class.createType(arguments = listOf(KTypeProjection.STAR))
-private val wildcardNullableCollectionType = Collection::class.createType(
-    arguments = listOf(KTypeProjection.STAR),
-    nullable = true
-)
-private val wildcardListType = List::class.createType(arguments = listOf(KTypeProjection.STAR))
-private val wildcardNullableListType = List::class.createType(arguments = listOf(KTypeProjection.STAR), nullable = true)
-private val wildcardSetType = Set::class.createType(arguments = listOf(KTypeProjection.STAR))
-private val wildcardNullableSetType = Set::class.createType(arguments = listOf(KTypeProjection.STAR), nullable = true)
 
 private const val MINIMUM_COLLECTION_SIZE = 1
 private const val MAXIMUM_COLLECTION_SIZE = 10
@@ -50,7 +43,6 @@ object KenesisFactory {
         config.loadBaseConfiguration()
     }
 
-    @Suppress("TooGenericExceptionThrown")
     fun <T> instance(
         targetClass: KClass<out Any>,
         generateNullables: Boolean = false,
@@ -62,7 +54,7 @@ object KenesisFactory {
     }
         .getOrElse { error ->
             logger.error(error) { "Error while creating instance of class [${targetClass.qualifiedName}]" }
-            throw RuntimeException(
+            throw RandomValueException(
                 "Could not generate random value for class [${targetClass.qualifiedName}]",
                 error
             )

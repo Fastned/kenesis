@@ -3,6 +3,7 @@ package io.github.fastned.library.kenesis.utils
 import io.github.classgraph.ClassGraph
 import io.github.fastned.library.kenesis.config.KenesisAutoDiscover
 import io.github.fastned.library.kenesis.config.KenesisGenerator
+import io.github.fastned.library.kenesis.core.exception.GenericTypeException
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -29,13 +30,15 @@ fun loadCustomGenerators(): Map<KType, KenesisGenerator<*>> {
 }
 
 private fun extractGenericType(clazz: Class<*>): KClass<*> {
-    return clazz.genericInterfaces.filterIsInstance<ParameterizedType>()
+    return clazz
+        .genericInterfaces
+        .filterIsInstance<ParameterizedType>()
         .firstOrNull { (it.rawType as? Class<*>) == KenesisGenerator::class.java }
         ?.actualTypeArguments[0]?.let {
         when (it) {
             is Class<*> -> it.kotlin
             is ParameterizedType -> (it.rawType as Class<*>).kotlin
-            else -> throw IllegalArgumentException("Cannot determine type parameter for ${clazz.name}")
+            else -> throw GenericTypeException("Cannot determine type parameter for ${clazz.name}")
         }
-    } ?: throw IllegalArgumentException("Cannot find KenesisValueGenerator interface in ${clazz.name}")
+    } ?: throw GenericTypeException("Cannot find KenesisValueGenerator interface in ${clazz.name}")
 }
