@@ -1,7 +1,6 @@
 package io.github.fastned.library.kenesis.utils
 
 import io.github.classgraph.ClassGraph
-import io.github.fastned.library.kenesis.config.KenesisAutoDiscover
 import io.github.fastned.library.kenesis.config.KenesisGenerator
 import io.github.fastned.library.kenesis.core.exception.GenericTypeException
 import java.lang.reflect.ParameterizedType
@@ -13,11 +12,9 @@ fun loadCustomGenerators(): Map<KType, KenesisGenerator<*>> {
     val valueGenerators =
         ClassGraph()
             .enableClassInfo()
-            .enableAnnotationInfo()
             .scan()
             .use { scanResult ->
                 scanResult.getClassesImplementing(KenesisGenerator::class.java)
-                    .filter { it.hasAnnotation(KenesisAutoDiscover::class.java) }
                     .loadClasses()
                     .toSet()
             }

@@ -1,10 +1,8 @@
 package io.github.fastned.library.kenesis
 
-import io.github.fastned.library.kenesis.generators.NotDiscoveredClass
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 
 class CustomProviderTest {
     @Test
@@ -17,12 +15,6 @@ class CustomProviderTest {
     fun `Custom provider should be used in a class as well`() {
         val sampleClass: SampleClassWithNonDefaultProperties = kenesis()
         assertEquals(expected = 0, actual = sampleClass.alwaysZeroInt.value, message = "Expected alwaysZeroInt to be 0")
-    }
-
-    @Test
-    fun `generator without annotation is not auto discovered`() {
-        val result = kenesis<NotDiscoveredClass>()
-        assertNotEquals(999, result.value)
     }
 
     class SampleClassWithNonDefaultProperties(
