@@ -14,6 +14,9 @@ import java.time.ZonedDateTime
 import java.util.UUID
 import kotlin.random.Random
 
+private const val CHAR_RANGE_START = 32
+private const val CHAR_RANGE_END = 127
+
 class DefaultProviderConfiguration : Provider() {
     private val logger = KotlinLogging.logger {}
 
@@ -27,6 +30,11 @@ class DefaultProviderConfiguration : Provider() {
         addProvider(UUID::class, UUID::randomUUID)
         addProvider(Byte::class) { Random.nextInt().toByte() }
         addProvider(Short::class) { Random.nextInt().toShort() }
+        addProvider(Char::class) { Random.nextInt(CHAR_RANGE_START, CHAR_RANGE_END).toChar() }
+        addProvider(UInt::class) { Random.nextInt().toUInt() }
+        addProvider(ULong::class) { Random.nextLong().toULong() }
+        addProvider(UByte::class) { Random.nextInt().toUByte() }
+        addProvider(UShort::class) { Random.nextInt().toUShort() }
         addProvider(LocalDate::class, DateGenerators::randomLocalDate)
         addProvider(LocalTime::class, DateGenerators::randomLocalTime)
         addProvider(LocalDateTime::class, DateGenerators::randomLocalDateTime)

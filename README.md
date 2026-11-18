@@ -11,7 +11,10 @@ Test library to provide mocked values to use in different tests.
 
 ## 📦 Installation
 
-TODO()
+Add the dependency to your `build.gradle.kts`:
+```kotlin
+testImplementation("io.github.fastned:kenesis:<version>")
+```
 
 ## ⚡ Usage
 
@@ -36,10 +39,10 @@ val myList = listOf(
 ```
 
 ### Nullable fields
-By default, any nullable field will have `null` value when the generation happens.
-If this is not the behavior that you want, you can ask for the library to generate the nullable fields:
+By default, nullable fields are generated with a random non-null value.
+If you want nullable fields to be `null` instead, set `generateNullables` to `false`:
 ```kotlin
-val myInstance = kenesis<ClassWithNullables>(generateNullables = true)
+val myInstance = kenesis<ClassWithNullables>(generateNullables = false)
 ```
 
 ### Default parameters
@@ -108,7 +111,14 @@ This command will build the project and publish it to your local Maven repositor
 
 Then, if you want to use the library in your project, you need to add the local Maven repository to your `build.gradle.kts` file:
 ```kotlin
-TODO()
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation("io.github.fastned:kenesis:<version>")
+}
 ```
 Make sure your project includes `mavenLocal()` in its repositories.
 
